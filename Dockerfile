@@ -7,11 +7,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install Apache, unzip, and other necessary packages
 RUN apt-get update && apt-get install -y \
     apache2 \
-    zip \
-    unzip
+    unzip \
+    wget
 
-# Add your website files to the container (place them in the same directory as the Dockerfile)
-COPY ./your-website-files /var/www/html/
+# Download the zip file from the specified URL and extract it
+WORKDIR /var/www/html
+RUN wget https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip && \
+    unzip photogenic.zip && \
+    rm photogenic.zip
 
 # Start the Apache service
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
